@@ -1,7 +1,10 @@
-
 import { Component, OnInit, } from '@angular/core';
-import {Dato} from '../dato';
-import {DATI} from '../listaDati2';
+import { ristoranti } from 'src/assets/your-json-dir/ristoranti';
+import { CriteriRicerca } from '../classes/criteri-ricerca';
+import { Ristorante } from '../classes/ristorante';
+import { Posizione } from '../classes/posizione';
+import { RicercaUserComponent } from '../ricerca-user/ricerca-user.component';
+
 
 @Component({
   selector: 'app-ricerca',
@@ -9,76 +12,70 @@ import {DATI} from '../listaDati2';
   styleUrls: ['./ricerca.component.css']
 })
 export class RicercaComponent implements OnInit {
-
-  
-  myAttributo!: string;
-  myPosition!:number[];
-  myTempo!:number;
-  listaCompleta: Dato[]=DATI;
-  vettorePunteggi!: number[];
-  lat1:number=this.myPosition[1];
-  lon1:number=this.myPosition[2];
-  listaOrdinata!:Dato[];
+  ristoranti = ristoranti;
+  myAttributo : string =ricercaUser.attributo;
+  myTime: number= RicercaUserComponent.ricercaUser.tempo;
+  myPosition: Posizione= RicercaUserComponent.ricercaUser.coordinate;
  
-  constructor() { 
+  constructor() {
   }
 
   ngOnInit(): void {
   }
 
-  ricerca(attributo:string,position : number[], tempo:number){
-    this.myPosition=position;
-    this.myTempo=tempo;
-    this.myAttributo=attributo;
+  ricercaCorrente = new CriteriRicerca(this.myAttributo, this.myPosition, this.myTime);
+  punteggi = ristoranti
+  .map((r) => { return { ristorante: r, punteggio: this.fitness(r, this.ricercaCorrente) } })
+  .sort((r1, r2) => r1.punteggio - r2.punteggio)
+  .slice(0, 9);
+  
+  public fitness(r: Ristorante, cr: CriteriRicerca): number {
+    var punteggio = 0;
 
-    for(var i=0;i<this.listaCompleta.length;i++) 
-    {
-      if(this.listaCompleta[i].attributo==this.myAttributo)
-      {
-        this.vettorePunteggi[i]=100;
-      }
-      else {this.vettorePunteggi[i]=0;}
-      const lat2 =this.listaCompleta[i].coordinates[1];
-      const lon2 =this.listaCompleta[i].coordinates[2];
-      this.vettorePunteggi[i]=this.vettorePunteggi[i]-Math.abs(this.getDistanceFromLatLonInKm(this.lat1,this.lon1,lat2,lon2));
-      this.vettorePunteggi[i]=this.vettorePunteggi[i]-Math.abs(this.myTempo-this.listaCompleta[i].tempo);
-      this.ordinaLista(this.listaCompleta[i],this.listaOrdinata,this.vettorePunteggi);
+    // aggiungi punteggio per cibo
+    if (r.name == cr.preferenzaCibo)
+      punteggio += 50;
+
+    // aggiungi punteggio per vicinanza
+    if (r.coordinates.lat == cr.posizione.lat && r.coordinates.lon == cr.posizione.lon)
+      punteggio += 10;
+
+    punteggio =punteggio- this.punteggioCoordinate(r.coordinates, cr.posizione);
+
+
+    // aggiungi punteggio per tempo
+    if(r.tempo==cr.minutiDisponibili){
+      punteggio += 10;
     }
+
+    punteggio=punteggio- this.punteggioTempo(r.tempo,cr.minutiDisponibili);
+
+    return punteggio;
   }
-   getDistanceFromLatLonInKm(lat1:number, lon1:number, lat2:number , lon2:number) {
-      var R = 6371; // Radius of the earth in km
-      var dLat = this.deg2rad(lat2-lat1);  // deg2rad below
-      var dLon = this.deg2rad(lon2-lon1); 
-      var a = 
-        Math.sin(dLat/2) * Math.sin(dLat/2) +
-        Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) * 
-        Math.sin(dLon/2) * Math.sin(dLon/2)
-        ; 
-      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-      var d = R * c; // Distance in km
-      return d;
-    }
-    
-   deg2rad(deg: number) {
-      return deg * (Math.PI/180)
-    }
-    ordinaLista(elem:Dato,listaOrdinata:Dato[],Punti:number[]){
-        for(var j=0;j<this.listaCompleta.length;j++){
-        if(listaOrdinata==[])
-        {
-          listaOrdinata[j]=elem;
-          return 
-        }
-        else if(listaOrdinata[j]==null)
-        {
-          listaOrdinata[j]=elem;
-          return
-        }
-        else if(listaOrdinata[j]<elem){
-          this.ordinaLista(listaOrdinata[j],listaOrdinata,Punti);
-          listaOrdinata[j]=elem;
-        }
-      }
-      
-    }
+  punteggioTempo(tempo: number, minutiDisponibili: number) {
+    var d=Math.abs(tempo-minutiDisponibili)
+    return d;
   }
+
+  punteggioCoordinate(coordinate: Posizione,userPosition: Posizione){
+    var R = 6371;
+    const lat1=coordinate.lat;
+    const lon1=coordinate.lon;
+    const lat2=userPosition.lat;
+    const lon2=userPosition.lon;
+    var dLat = this.deg2rad(lat2 - lat1);  // deg2rad below
+    var dLon = this.deg2rad(lon2 - lon1);
+    var a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2)
+      ;
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c; // Distanza in km
+    return Math.abs(d);
+  }
+  deg2rad(deg: number) {
+    return deg * (Math.PI / 180)
+  }
+
+}

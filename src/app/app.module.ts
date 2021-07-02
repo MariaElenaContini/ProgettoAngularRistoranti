@@ -3,11 +3,13 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { RicercaComponent } from './ricerca/ricerca.component';
+import { RicercaUserComponent } from './ricerca-user/ricerca-user.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    RicercaComponent
+    RicercaComponent,
+    RicercaUserComponent
   ],
   imports: [
     BrowserModule

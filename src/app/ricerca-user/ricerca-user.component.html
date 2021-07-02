@@ -1,0 +1,26 @@
+<div class="container">
+    <form>
+     <div class="form-group">
+     <h1 class="text-center text-primary">Ciao!</h1>
+     <div class="input-group-prepend">
+        <button type="button" class="btn btn-outline-secondary">Cosa vorresti?</button>
+        <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <div class="dropdown-menu">
+          <a *ngFor="let attributo of ATTRIBUTI">{{attributo}}</a>
+        </div>
+      </div>
+      <input type="text" class="form-control" aria-label="Text input with segmented dropdown button">
+      <div class="input-group-prepend">
+        <input type="text" #tempoUser class="form-control" placeholder="Quanto tempo hai?" name="tempoUser">
+        <span class="input-group-text" (click)="addTempo(tempoUser.value)">tempo</span>
+    </div>
+     <div>
+    <span class="input-group-text" (click)="addCoordinate()">Clicca qui per darci la tua posizione</span>
+     </div>
+    </div>
+    </form>
+   </div>
+   
+  

@@ -1,4 +1,6 @@
- "datijson":[
+import { Ristorante } from "../../app/classes/ristorante";
+
+export var ristoranti: Ristorante[] = [
     {
       "attributo": "Pizza",
       "coordinates": [

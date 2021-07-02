@@ -1,4 +1,4 @@
-import {Dato} from './dato';
+import {Ristorante} from './classes/ristorante';
 export const ATTRIBUTI : string[]=[
     'Pizza',
     'Bakery',
