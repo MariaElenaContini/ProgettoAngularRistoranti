@@ -3,6 +3,6 @@ import { Posizione } from "./posizione";
 export interface Ristorante {
     attributo: string;
     coordinates: Posizione;
-    name : string;
+    name: string;
     tempo: number;
 }
