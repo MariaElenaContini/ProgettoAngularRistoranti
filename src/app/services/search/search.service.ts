@@ -50,13 +50,13 @@ export class SearchService {
       punteggio += 10;
     }
 
-    punteggio = punteggio - this.punteggioTempo(r.tempo, cr.minutiDisponibili);
+    punteggio = punteggio + this.punteggioTempo(r.tempo, cr.minutiDisponibili);
 
     return punteggio;
   }
 
   private punteggioTempo(tempo: number, minutiDisponibili: number): number {
-    return Math.abs(tempo - minutiDisponibili);
+    return Math.abs(tempo - minutiDisponibili) * -1;
   }
 
   private punteggioCoordinate(coordinate: Posizione, userPosition: Posizione): number {
