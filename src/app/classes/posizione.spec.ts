@@ -1,3 +1,4 @@
+
 import { Posizione } from './posizione';
 
 describe('Posizione', () => {

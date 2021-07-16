@@ -9,7 +9,7 @@ import { RicercaUserComponent } from './ricerca-user/ricerca-user.component';
   declarations: [
     AppComponent,
     RicercaComponent,
-    RicercaUserComponent
+    RicercaUserComponent,
   ],
   imports: [
     BrowserModule

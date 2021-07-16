@@ -1,8 +1,10 @@
 
 import { Component, OnInit } from '@angular/core';
 import { Posizione } from '../classes/posizione';
-import {Ristorante} from '../classes/ristorante';
 import {ATTRIBUTI} from '../attributiDati';
+import { SearchService } from '../services/search/search.service';
+import { CriteriRicerca } from '../classes/criteri-ricerca';
+import { Tempi } from '../classes/tempi';
 @Component({
   selector: 'app-ricerca-user',
   templateUrl: './ricerca-user.component.html',
@@ -14,21 +16,17 @@ export class RicercaUserComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  lat=-73.9474091;
-  lon=40.6618618;
   p:Posizione ={//coordinate di Brooklyn
    lat: -73.9474091,
    lon: 40.6618618,
   }
-  public ricercaUser!: Ristorante;
+  public ricercaUser!: CriteriRicerca;
 
-  addAttributo(tipo:string){
-    this.ricercaUser.attributo==tipo;
-  };
-  addTempo(tempoUser:number){
-    this.ricercaUser.tempo==tempoUser;
-  };
-  addCoordinate(){
-    this.ricercaUser.coordinates==this.p;
-  };
+  private ricerca(tipo:string,p:Posizione,tempoUser:number) {
+    this.ricercaUser.preferenzaCibo=tipo;
+    this.ricercaUser.posizione=p;
+    this.ricercaUser.minutiDisponibili=tempoUser;
+
+    return SearchService.search(this.ricercaUser)
+  }
 }

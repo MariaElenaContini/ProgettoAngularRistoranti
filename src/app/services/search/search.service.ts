@@ -3,11 +3,15 @@ import { CriteriRicerca } from 'src/app/classes/criteri-ricerca';
 import { Posizione } from 'src/app/classes/posizione';
 import { Ristorante } from 'src/app/classes/ristorante';
 import { ristoranti } from 'src/assets/your-json-dir/ristoranti';
+import { RicercaUserComponent } from 'src/app/ricerca-user/ricerca-user.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SearchService {
+  static search(ricercaUser: CriteriRicerca) {
+    throw new Error('Method not implemented.');
+  }
 
   constructor() { }
 
@@ -16,7 +20,7 @@ export class SearchService {
    * @param criteri I criteri con cui viene alimentata la ricerca
    * @returns I migliori N ristoranti individuati dalla ricerca
    */
-  public search(criteri: CriteriRicerca): Ristorante[] {
+  public search(criteri: CriteriRicerca ): Ristorante[] {
     return ristoranti
       .map((r) => ({ ristorante: r, punteggio: this.fitness(r, criteri) }))
       .sort((r1, r2) => r2.punteggio - r1.punteggio)
