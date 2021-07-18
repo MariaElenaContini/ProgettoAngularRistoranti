@@ -1,5 +1,5 @@
 import {Ristorante} from './classes/ristorante';
-export const ATTRIBUTI : string[]=[
+export const attributi : string[]=[
     'Pizza',
     'Bakery',
     'Sushi',

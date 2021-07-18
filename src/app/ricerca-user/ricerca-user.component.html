@@ -1,31 +1,35 @@
+<form [formGroup]="criteriRicerca" (ngSubmit)="ricerca()">
 <div style="text-align: center;">
   <h1 style="text-align: center;">
     <span style="color: #808080;">
-      <em>CIAO! cosa vuoi mangiare oggi?</em>
+      <em>CIAO! Tu sei qui:</em>
+      <img src="/Users/mariaelenacontini/Desktop/img.brooklyn">
     </span>
   </h1>
   <p style="text-align: center;">
     <span style="color: #000000;">Che tipo di cibo desideri?</span>
   </p>
   <div style="text-align: center;">
-    <label for="tipo"> </label>
-    <select id="attributo" class="form-control" name="ATTRIBUTO" required="">
-      <option value="">{{ATTRIBUTO}}</option>
+    <label for="tipo"></label>
+    <select id="attributo" class="form-control" name="attributo" required
+    [(ngModel)]="model.attributo" name="attributo"
+    #attributo="ngModel">
+    <option [value]=""></option>
+    <option *ngFor="let a of attributi" [value]="a">{{a}}</option>
     </select>
   </div>
   <p style="text-align: center;">
     <span style="color: #000000;">Quanto tempo hai?</span>
   </p>
   <div style="text-align: center;">
-    <label for="tempo">
-    </label>
-    <select id="tempo" class="form-control" name="Tempo" required="">
-  <option value="">{{Tempo}}</option>
-  </select>
+    <label for="tempo"></label>
+    <select id="tempo" class="form-control" name="tempo" required
+    [(ngModel)]="model.tempo" name="tempo"
+    #tempo="ngModel">
+    <option [value]=""></option>
+    <option *ngFor="let t of tempi" [value]="t.minuti">{{t.testo}}</option>
+    </select>
 </div>
-  <p style="text-align: center;">
-    <span style="color: #353536;">
-      <button>Clicca qui per darci la tua posizione</button>
-    </span>
-  </p>
-  <button class="btn btn-primary" style="color: blue;" (click)="RicercaUserComponent.ricerca()" type="submit">CERCA</button></div>
+<button class="btn btn-primary" style="color: blue;" type="submit">CERCA</button>
+</div>
+</form>
