@@ -5,14 +5,21 @@ import {attributi} from '../attributiDati';
 import { SearchService } from '../services/search/search.service';
 import { CriteriRicerca } from '../classes/criteri-ricerca';
 import { tempi } from '../classes/tempi';
-import { NgForm } from '@angular/forms';
+
+import { FormGroup,FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-ricerca-user',
   templateUrl: './ricerca-user.component.html',
   styleUrls: ['./ricerca-user.component.css']
 })
+
 export class RicercaUserComponent implements OnInit {
+  criteriRicerca = new FormGroup({
+    a: new FormControl(''), // attributo 
+    t: new FormControl(''), // tempo
+  })
+  
   ATTRIBUTI=attributi;
 
   constructor(private readonly searchService: SearchService) {}
@@ -23,11 +30,12 @@ export class RicercaUserComponent implements OnInit {
    lat: 40.6618618,
    lon: -73.9474091,
   }
-  
-  private ricerca(cr : NgForm) {
-    const ricercaUser = new CriteriRicerca(cr.value(1), this.p,cr.value(2));
+  submitted =false;
+  onSubmit() { this.submitted = true; }
+  private ricerca() {
+    const ricercaUser = new CriteriRicerca(this.criteriRicerca.value.a ,this.p, this.criteriRicerca.value.t);
     const ristoranti = this.searchService.search(ricercaUser);
-    console.log(ristoranti);
+    console.log(ristoranti)
 
   }
 }

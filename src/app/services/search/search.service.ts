@@ -84,4 +84,12 @@ export class SearchService {
   private deg2rad(deg: number): number {
     return deg * (Math.PI / 180);
   }
+
+  public ristorantiVicini(p:Posizione):Ristorante[]{
+  return ristoranti
+      .map((r) => ({ ristorante: r, punteggio: this.punteggioCoordinate(r.coordinates, p) }))
+      .sort((r1, r2) => r2.punteggio - r1.punteggio)
+      .slice(0, 9)
+      .map((rp) => rp.ristorante);
+  }
 }
