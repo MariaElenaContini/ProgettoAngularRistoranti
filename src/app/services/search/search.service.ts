@@ -47,7 +47,7 @@ export class SearchService {
       punteggio += 10;
     }
 
-    punteggio = punteggio - this.punteggioCoordinate(r.coordinates, cr.posizione);
+    punteggio = punteggio - this.distanzaCoordinate(r.coordinates, cr.posizione);
 
     // aggiungi punteggio per tempo
     if (r.tempo === cr.minutiDisponibili) {
@@ -63,7 +63,7 @@ export class SearchService {
     return Math.abs(tempo - minutiDisponibili) * -1;
   }
 
-  private punteggioCoordinate(coordinate: Posizione, userPosition: Posizione): number {
+  private distanzaCoordinate(coordinate: Posizione, userPosition: Posizione): number {
     const EarthRadiusKm = 6371;
     const lat1 = coordinate.lat;
     const lon1 = coordinate.lon;
@@ -87,9 +87,9 @@ export class SearchService {
 
   public ristorantiVicini(p:Posizione):Ristorante[]{
   return ristoranti
-      .map((r) => ({ ristorante: r, punteggio: this.punteggioCoordinate(r.coordinates, p) }))
-      .sort((r1, r2) => r2.punteggio - r1.punteggio)
-      .slice(0, 9)
+      .map((r) => ({ ristorante: r, distanza: this.distanzaCoordinate(r.coordinates, p) }))
+      .sort((r1, r2) => r1.distanza - r2.distanza) // ho invertito r1 e r2 per avere un ordine crescente 
+      .slice(0, 9)                                // NB punteggioCoordinate calcola il modulo della distanza
       .map((rp) => rp.ristorante);
   }
 }
