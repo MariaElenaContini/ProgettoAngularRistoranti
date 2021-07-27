@@ -1,3 +1,10 @@
+<div [hidden]="!submitted">  <!-- ...quando vengono inseriti dei criteri di ricervca ... -->
+  <h2>Il risultato della tua ricerca:</h2>
+  
+  <br>
+  <button class="btn btn-primary" (click)="submitted=false">Modifica</button>
+</div>
+
 <form [formGroup]="criteriRicerca" (ngSubmit)="ricerca()">
 <div style="text-align: center;">
   <h1 style="text-align: center;">
@@ -11,12 +18,17 @@
   </p>
   <div style="text-align: center;">
     <label for="tipo"></label>
-    <select id="attributo" class="form-control" name="attributo" required
+    <select id="attributo" class="form-control ng-valid ng-untouched ng-pristine" name="attributo" required
     [(ngModel)]="model.attributo" name="attributo"
     #attributo="ngModel">
     <option [value]=""></option>
     <option *ngFor="let a of attributi" [value]="a">{{a}}</option>
+    <div [hidden]="attributo.valid || attributo.pristine"
+     class="alert alert-danger">
+     l'attributo non è valido
+    </div> 
     </select>
+
   </div>
   <p style="text-align: center;">
     <span style="color: #000000;">Quanto tempo hai?</span>
@@ -30,6 +42,12 @@
     <option *ngFor="let t of tempi" [value]="t.minuti">{{t.testo}}</option>
     </select>
 </div>
-<button class="btn btn-primary" style="color: blue;" type="submit">CERCA</button>
+<button type="submit" class="btn btn-primary" style="color: blue;" [disabled]="!criteriRicerca.form.valid" >CERCA</button>
 </div>
 </form>
+<div [hidden]="submitted">
+  <h2>Forse ti potrebbero interssare:</h2>
+
+     <!-- ... lista dei ristoranti piu vicini ... -->
+
+</div>

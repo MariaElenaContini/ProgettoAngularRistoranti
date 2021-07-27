@@ -31,8 +31,9 @@ export class RicercaUserComponent implements OnInit {
    lon: -73.9474091,
   }
   submitted =false;
-  onSubmit() { this.submitted = true; }
+
   private ricerca() {
+    this.submitted = true;
     const ricercaUser = new CriteriRicerca(this.criteriRicerca.value.a ,this.p, this.criteriRicerca.value.t);
     const ristoranti = this.searchService.search(ricercaUser);
     console.log(ristoranti)
