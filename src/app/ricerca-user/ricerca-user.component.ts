@@ -4,7 +4,11 @@ import { Posizione } from '../classes/posizione';
 import { SearchService } from '../services/search/search.service';
 import { CriteriRicerca } from '../classes/criteri-ricerca';
 
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { Validators } from '@angular/forms';
+import { Ristorante } from '../classes/ristorante';
+import { Attribute } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-ricerca-user',
@@ -13,11 +17,6 @@ import { FormGroup, FormControl } from '@angular/forms';
 })
 
 export class RicercaUserComponent implements OnInit {
-  criteriRicerca = new FormGroup({
-    a: new FormControl(''), // attributo
-    t: new FormControl(''), // tempo
-  });
-
   public readonly attributi: string[] = [
     'Pizza',
     'Bakery',
@@ -40,24 +39,46 @@ export class RicercaUserComponent implements OnInit {
     { minuti: 90, testo: '1h e 30 min' },
     { minuti: 120, testo: '2 h' }
   ];
-
   public readonly p = new Posizione(//coordinate di Brooklyn
     40.6618618,
     -73.9474091,
   );
 
-  constructor(private readonly searchService: SearchService) { }
 
-  ngOnInit(): void {
+  criteriRicerca: FormGroup;
+  constructor(private readonly searchService: SearchService,private formBuilder: FormBuilder) {
+    this.criteriRicerca= this.formBuilder.group({
+      a: ['',Validators.required],
+      t: ['',Validators.required]
+    })
+   }
+  ngOnInit(){};
+  get a(){
+    return this.criteriRicerca.get('a');
+  }
+  get t(){
+    return this.criteriRicerca.get('t');
   }
 
   submitted = false;
 
   public ricerca() {
-    console.log('ricerca in corso...', this.criteriRicerca.controls.a.value, this.criteriRicerca.controls.t.value);
-    const ricercaUser = new CriteriRicerca(this.criteriRicerca.value.a, this.p, this.criteriRicerca.value.t);
-    const ristoranti = this.searchService.search(ricercaUser);
-    console.log(ristoranti);
     this.submitted = true;
+    //console.log('ricerca in corso...', this.criteriRicerca.controls.a.value, this.criteriRicerca.controls.t.value);
+    const ricercaUser = new CriteriRicerca(this.criteriRicerca.value.a, this.p, this.criteriRicerca.value(2));
+    
+    const ristoranti = this.searchService.search(ricercaUser);
+    return ristoranti
+    
   }
+  public ristorantiVicini():Ristorante[]{
+    const listaRistorantiVicini= this.searchService.ristorantiVicini(this.p);
+    return listaRistorantiVicini
+  }
+
+  public getInfo(r:Ristorante){
+    const distanzaInKm= this.searchService.distanzaCoordinate(r.coordinates,this.p) // vengono numeri grandissimi!!
+    window.alert(r.name+","+r.attributo+", tempo di permanenza medio: "+r.tempo+" minuti")
+  }
+ 
 }

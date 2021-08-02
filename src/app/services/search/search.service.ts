@@ -63,7 +63,7 @@ export class SearchService {
     return Math.abs(tempo - minutiDisponibili) * -1;
   }
 
-  private distanzaCoordinate(coordinate: Posizione, userPosition: Posizione): number {
+  public distanzaCoordinate(coordinate: Posizione, userPosition: Posizione): number {
     const EarthRadiusKm = 6371;
     const lat1 = coordinate.lat;
     const lon1 = coordinate.lon;
