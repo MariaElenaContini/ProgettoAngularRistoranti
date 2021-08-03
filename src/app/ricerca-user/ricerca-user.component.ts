@@ -9,6 +9,7 @@ import { Validators } from '@angular/forms';
 import { Ristorante } from '../classes/ristorante';
 import { Attribute } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-ricerca-user',
@@ -40,8 +41,9 @@ export class RicercaUserComponent implements OnInit {
     { minuti: 120, testo: '2 h' }
   ];
   public readonly p = new Posizione(//coordinate di Brooklyn
-    40.6618618,
-    -73.9474091,
+   -73.9474091, 
+   40.6618618,
+    
   );
 
 
@@ -62,23 +64,22 @@ export class RicercaUserComponent implements OnInit {
 
   submitted = false;
 
-  public ricerca() {
+  public ricerca():Ristorante[] {
     this.submitted = true;
     //console.log('ricerca in corso...', this.criteriRicerca.controls.a.value, this.criteriRicerca.controls.t.value);
-    const ricercaUser = new CriteriRicerca(this.criteriRicerca.value.a, this.p, this.criteriRicerca.value(2));
-    
-    const ristoranti = this.searchService.search(ricercaUser);
-    return ristoranti
+    const ricercaUser = new CriteriRicerca(this.criteriRicerca.value, this.p,this.criteriRicerca.value.t);
+    return this.searchService.search(ricercaUser);
+   
     
   }
   public ristorantiVicini():Ristorante[]{
-    const listaRistorantiVicini= this.searchService.ristorantiVicini(this.p);
-    return listaRistorantiVicini
+    return this.searchService.ristorantiVicini(this.p);
   }
 
   public getInfo(r:Ristorante){
     const distanzaInKm= this.searchService.distanzaCoordinate(r.coordinates,this.p) // vengono numeri grandissimi!!
-    window.alert(r.name+","+r.attributo+", tempo di permanenza medio: "+r.tempo+" minuti")
+    window.alert(r.name+","+r.attributo+", tempo di permanenza medio: "+r.tempo+" minuti"+", dista da te: " 
+    +distanzaInKm.toPrecision(2)+"km")
   }
  
 }

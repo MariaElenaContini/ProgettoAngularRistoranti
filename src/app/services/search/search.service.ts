@@ -24,7 +24,7 @@ export class SearchService {
     return ristoranti
       .map((r) => ({ ristorante: r, punteggio: this.fitness(r, criteri) }))
       .sort((r1, r2) => r2.punteggio - r1.punteggio)
-      .slice(0, 9)
+      .slice(0, 10)
       .map((rp) => rp.ristorante);
   }
 
@@ -38,20 +38,20 @@ export class SearchService {
     let punteggio = 0;
 
     // aggiungi punteggio per cibo
-    if (r.name === cr.preferenzaCibo) {
-      punteggio += 50;
+    if (r.attributo === cr.preferenzaCibo) {
+      punteggio += 500000;
     }
 
     // aggiungi punteggio per vicinanza
     if (r.coordinates.lat === cr.posizione.lat && r.coordinates.lon === cr.posizione.lon) {
-      punteggio += 10;
+      punteggio += 100;
     }
 
     punteggio = punteggio - this.distanzaCoordinate(r.coordinates, cr.posizione);
 
     // aggiungi punteggio per tempo
     if (r.tempo === cr.minutiDisponibili) {
-      punteggio += 10;
+      punteggio =punteggio + 100;
     }
 
     punteggio = punteggio + this.punteggioTempo(r.tempo, cr.minutiDisponibili);
@@ -60,7 +60,7 @@ export class SearchService {
   }
 
   private punteggioTempo(tempo: number, minutiDisponibili: number): number {
-    return Math.abs(tempo - minutiDisponibili) * -1;
+    return (Math.abs(tempo - minutiDisponibili) * -1);
   }
 
   public distanzaCoordinate(coordinate: Posizione, userPosition: Posizione): number {
@@ -74,8 +74,7 @@ export class SearchService {
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
-      Math.sin(dLon / 2) * Math.sin(dLon / 2)
-      ;
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const d = EarthRadiusKm * c; // Distanza in km
     return Math.abs(d);
@@ -89,7 +88,7 @@ export class SearchService {
   return ristoranti
       .map((r) => ({ ristorante: r, distanza: this.distanzaCoordinate(r.coordinates, p) }))
       .sort((r1, r2) => r1.distanza - r2.distanza) // ho invertito r1 e r2 per avere un ordine crescente 
-      .slice(0, 9)                                // NB punteggioCoordinate calcola il modulo della distanza
+      .slice(0, 10)                                // NB punteggioCoordinate calcola il modulo della distanza
       .map((rp) => rp.ristorante);
   }
 }

@@ -1,9 +1,4 @@
-<div *ngIf="submitted" style="text-align: center;">  <!-- ...quando vengono inseriti dei criteri di ricervca ... -->
-  <h2>Il risultato della tua ricerca:</h2>
-  <div *ngFor="let r of ricerca()">{{r.name }}</div>
-  <br>
-  <button class="btn btn-primary" style="color: blue;" (click)="submitted=false">Modifica</button>
-</div>
+
 <div *ngIf="!submitted" style="text-align: center;">
 <form [formGroup]="criteriRicerca" (ngSubmit)="ricerca()">
   <div style="text-align: center;">
@@ -30,7 +25,8 @@
         <option *ngFor="let t of tempi" [value]="t.minuti" >{{ t.testo }}</option>
       </select>
     </div>
-    <button class="btn btn-primary" style="color: blue;" type="submit" >CERCA</button>
+    <button class="btn btn-primary" type="submit" [disabled]="!criteriRicerca.valid" >CERCA</button>
+    <div *ngIf="criteriRicerca.invalid" class="alert" style="border: darkred;color: darkred;font-style:italic;">Per avviare la ricerca devi inserire i dati richiesti!</div>
   </div>
 </form>
 
@@ -40,7 +36,16 @@
  <div *ngFor="let ristorante of ristorantiVicini()" >
   <button (click)="getInfo(ristorante)" >{{ristorante.name}}</button>
 </div>
-
   <br>
 </div>
+</div>
+<div *ngIf="submitted" style="text-align: center;">  <!-- ...quando vengono inseriti dei criteri di ricervca ... -->
+ 
+  <div *ngIf="criteriRicerca.valid">
+    <h2>Il risultato della tua ricerca:</h2>
+  <div *ngFor="let r of ricerca()">
+    <button (click)="getInfo(r)" >{{r.name}}</button></div>
+  <p>Form value: {{ criteriRicerca.value | json}}, status {{criteriRicerca.status}}</p>
+</div>
+<button class="btn btn-primary" style="color: blue;" (click)="submitted=false">Modifica</button>
 </div>
