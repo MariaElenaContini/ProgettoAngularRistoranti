@@ -39,22 +39,22 @@ export class SearchService {
 
     // aggiungi punteggio per cibo
     if (r.attributo === cr.preferenzaCibo) {
-      punteggio += 500000;
+      punteggio = punteggio + 500000;
     }
 
     // aggiungi punteggio per vicinanza
     if (r.coordinates.lat === cr.posizione.lat && r.coordinates.lon === cr.posizione.lon) {
-      punteggio += 100;
+      punteggio += 1;
     }
 
-    punteggio = punteggio - this.distanzaCoordinate(r.coordinates, cr.posizione);
+    punteggio = punteggio - this.distanzaCoordinate(r.coordinates, cr.posizione)*10;
 
     // aggiungi punteggio per tempo
     if (r.tempo === cr.minutiDisponibili) {
-      punteggio =punteggio + 100;
+      punteggio = punteggio + 1;
     }
 
-    punteggio = punteggio + this.punteggioTempo(r.tempo, cr.minutiDisponibili);
+    punteggio = punteggio + this.punteggioTempo(r.tempo, cr.minutiDisponibili)*10;
 
     return punteggio;
   }

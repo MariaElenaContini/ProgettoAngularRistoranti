@@ -1,2 +1,16 @@
-
-  
+div {
+    font-weight: normal;
+    color: darkblue;
+  }
+  :host ::ng-deep h3 {
+    font-style:initial;
+  }
+  :host {
+    display: block;
+    background-color: rgb(245, 229, 90);
+    color: white;
+  }
+  button {
+    background-color:white;
+    border: 1px thick  navy;
+  }

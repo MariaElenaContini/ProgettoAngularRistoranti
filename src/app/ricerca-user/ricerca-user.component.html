@@ -3,7 +3,7 @@
 <form [formGroup]="criteriRicerca" (ngSubmit)="ricerca()">
   <div style="text-align: center;">
     <h1 style="text-align: center;">
-      <span style="color: #808080;">
+      <span style="color:navy">
         <em>CIAO! Tu sei qui:</em>
       </span>
     </h1>
@@ -26,7 +26,8 @@
       </select>
     </div>
     <button class="btn btn-primary" type="submit" [disabled]="!criteriRicerca.valid" >CERCA</button>
-    <div *ngIf="criteriRicerca.invalid" class="alert" style="border: darkred;color: darkred;font-style:italic;">Per avviare la ricerca devi inserire i dati richiesti!</div>
+    <div *ngIf="criteriRicerca.invalid" class="alert" style="margin: 0.5 cm ; color: darkred;font-style:italic;">
+      Per avviare la ricerca devi inserire i dati richiesti!</div>
   </div>
 </form>
 
@@ -36,16 +37,13 @@
  <div *ngFor="let ristorante of ristorantiVicini()" >
   <button (click)="getInfo(ristorante)" >{{ristorante.name}}</button>
 </div>
-  <br>
 </div>
 </div>
-<div *ngIf="submitted" style="text-align: center;">  <!-- ...quando vengono inseriti dei criteri di ricervca ... -->
- 
+<div *ngIf="submitted" style="text-align: center;">  <!-- ...quando vengono inseriti dei criteri di ricervca ... --> 
   <div *ngIf="criteriRicerca.valid">
     <h2>Il risultato della tua ricerca:</h2>
   <div *ngFor="let r of ricerca()">
     <button (click)="getInfo(r)" >{{r.name}}</button></div>
-  <p>Form value: {{ criteriRicerca.value | json}}, status {{criteriRicerca.status}}</p>
 </div>
 <button class="btn btn-primary" style="color: blue;" (click)="submitted=false">Modifica</button>
 </div>
