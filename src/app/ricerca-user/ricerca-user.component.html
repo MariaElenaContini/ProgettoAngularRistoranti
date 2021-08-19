@@ -25,24 +25,38 @@
         <option *ngFor="let t of tempi" [value]="t.minuti" >{{ t.testo }}</option>
       </select>
     </div>
-    <button class="btn btn-primary" type="submit" [disabled]="!criteriRicerca.valid" >CERCA</button>
     <div *ngIf="criteriRicerca.invalid" class="alert" style="margin: 0.5 cm ; color: darkred;font-style:italic;">
       Per avviare la ricerca devi inserire i dati richiesti!</div>
+    <button class="btn btn-primary" type="submit" [disabled]="!criteriRicerca.valid" >CERCA</button>
+    
   </div>
 </form>
 
 <div *ngIf="!submitted" style="text-align: center;">  <!-- ...quando non vengono inseriti dei criteri di ricervca ... -->
   <h2>Forse ti potrebbero interessare:</h2>
-
- <div *ngFor="let ristorante of ristorantiVicini()" >
-  <button (click)="getInfo(ristorante)" >{{ristorante.name}}</button>
+ <div>
+  <table width="100%" style="text-align:center ">
+    <tr  *ngFor="let ristorante of ristorantiVicini()">
+      <td><b>{{ristorante.name | uppercase}} :</b></td>
+      <td>{{ristorante.attributo}}</td>
+      <td>tempo di permanenza medio: {{getTempo(ristorante.tempo)}}</td>
+      <td>distante da te: {{getDistanza(ristorante.coordinates)}}</td>
+    </tr>
+  </table>
 </div>
 </div>
 <div *ngIf="submitted" style="text-align: center;">  <!-- ...quando vengono inseriti dei criteri di ricervca ... --> 
   <div *ngIf="criteriRicerca.valid">
     <h2>Il risultato della tua ricerca:</h2>
-   <div *ngFor="let r of ricerca()">
-    <button (click)="getInfo(r)" >{{r.name}}</button>
+   <div>
+    <table width="100%" style="text-align:center ">
+      <tr *ngFor="let r of ricerca()">
+        <td><b>{{r.name | uppercase}} :</b></td>
+        <td>{{r.attributo}}</td>
+        <td>tempo di permanenza medio: {{getTempo(r.tempo)}}</td>
+        <td>distante da te: {{getDistanza(r.coordinates)}}</td>
+      </tr>
+    </table>
    </div>
   </div>
 </div>
