@@ -1,5 +1,3 @@
-
-
 <form [formGroup]="criteriRicerca" (ngSubmit)="ricerca()">
   <div style="text-align: center;">
     <h1 style="text-align: center;">
@@ -7,8 +5,8 @@
         <em>CIAO! Tu sei qui:</em>
       </span>
     </h1>
-    <img src="/assets/img.brooklyn.png" height="300" width="450">
-
+   <img (click)="cambiaPosizione()" [src]="posizioni[currentPosition].img" height="300" width="450">
+    
     <div style="text-align: center;">
       <label for="a">Che tipo di cibo desideri?</label>
       <select id="a" class="form-control" formControlName="a" required>
@@ -28,10 +26,8 @@
     <div *ngIf="criteriRicerca.invalid" class="alert" style="margin: 0.5 cm ; color: darkred;font-style:italic;">
       Per avviare la ricerca devi inserire i dati richiesti!</div>
     <button class="btn btn-primary" type="submit" [disabled]="!criteriRicerca.valid" >CERCA</button>
-    
   </div>
 </form>
-
 <div *ngIf="!submitted" style="text-align: center;">  <!-- ...quando non vengono inseriti dei criteri di ricervca ... -->
   <h2>Forse ti potrebbero interessare:</h2>
  <div>

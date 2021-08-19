@@ -42,11 +42,11 @@ export class SearchService {
       punteggio = punteggio + 30;
     }
 
-    // aggiungi punteggio per vicinanza
-    if (r.coordinates.lat === cr.posizione.lat && r.coordinates.lon === cr.posizione.lon) {
-     console.log('esatta posizione');
-      punteggio += 1;
-    }
+  // aggiungi punteggio per vicinanza --- NON succederà mai
+  //if (r.coordinates.lat === cr.posizione.lat && r.coordinates.lon === cr.posizione.lon) {
+  // console.log('esatta posizione');
+  // punteggio += 1;
+  //}
 
     punteggio = punteggio - this.distanzaCoordinate(r.coordinates, cr.posizione)*10;
 

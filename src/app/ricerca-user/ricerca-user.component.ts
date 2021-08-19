@@ -7,10 +7,7 @@ import { CriteriRicerca } from '../classes/criteri-ricerca';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { Ristorante } from '../classes/ristorante';
-import { Attribute } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { JsonPipe } from '@angular/common';
-import { toInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
+
 
 @Component({
   selector: 'app-ricerca-user',
@@ -41,11 +38,23 @@ export class RicercaUserComponent implements OnInit {
     { minuti: 90, testo: '1h e 30 min' },
     { minuti: 120, testo: '2 h' }
   ];
-  public readonly p = new Posizione(//coordinate di Brooklyn
-   -73.9474091, 
-   40.6618618,
-    
-  );
+  // public readonly p = new Posizione(//coordinate di Brooklyn
+  //  -73.9474091, 
+  //  40.6618618, 
+  // );
+
+  public readonly posizioni = [
+    {p : new Posizione(-73.9474091, 40.6618618), img : "/assets/img.brooklyn.png"  },//Brooklyn
+    {p : new Posizione(-73.984016, 40.754932), img : "/assets/img.manhattan.png" },//Manhattan
+    {p : new Posizione(-73.769417, 40.742054), img : "/assets/img.queens.png" }//Queens
+  ]
+
+  currentPosition=0; 
+  public cambiaPosizione(){
+    this.currentPosition = (this.currentPosition + 1) % this.posizioni.length
+    return this.posizioni[this.currentPosition]
+  }
+  
 
 
   criteriRicerca: FormGroup;
@@ -68,17 +77,17 @@ export class RicercaUserComponent implements OnInit {
   public ricerca():Ristorante[] {
     this.submitted = true;
     //console.log('ricerca in corso...', this.criteriRicerca.value);
-    const ricercaUser = new CriteriRicerca(this.criteriRicerca.controls.a.value, this.p,this.criteriRicerca.controls.t.value);
+    const ricercaUser = new CriteriRicerca(this.criteriRicerca.controls.a.value, this.posizioni[this.currentPosition].p,this.criteriRicerca.controls.t.value);
     return this.searchService.search(ricercaUser);
    
     
   }
   public ristorantiVicini():Ristorante[]{
-    return this.searchService.ristorantiVicini(this.p);
+    return this.searchService.ristorantiVicini(this.posizioni[this.currentPosition].p);
   }
-
+// NON LO USO 
   public getInfo(r:Ristorante){
-    const distanzaInKm= this.searchService.distanzaCoordinate(r.coordinates,this.p) 
+    const distanzaInKm= this.searchService.distanzaCoordinate(r.coordinates,this.posizioni[this.currentPosition].p) 
     window.alert(r.name+","+r.attributo+", tempo di permanenza medio: "+r.tempo+" minuti"+", dista da te: " 
     +distanzaInKm.toPrecision(2)+"km")
   }
@@ -96,10 +105,10 @@ export class RicercaUserComponent implements OnInit {
     return valore;
   }
   public getDistanza(coordinate:Posizione):string{
-    const distanzaInKm= this.searchService.distanzaCoordinate(coordinate,this.p)
+    const distanzaInKm= this.searchService.distanzaCoordinate(coordinate,this.posizioni[this.currentPosition].p)
     let valore = distanzaInKm.toPrecision(2) +"km" 
     if (distanzaInKm < 1){
-      valore= Math.round(distanzaInKm*1000)+ "m"
+      valore = Math.round(distanzaInKm*1000)+ "m"
     }
     return valore
   }
