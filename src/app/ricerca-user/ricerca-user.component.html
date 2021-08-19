@@ -1,5 +1,5 @@
 
-<div *ngIf="!submitted" style="text-align: center;">
+
 <form [formGroup]="criteriRicerca" (ngSubmit)="ricerca()">
   <div style="text-align: center;">
     <h1 style="text-align: center;">
@@ -38,12 +38,11 @@
   <button (click)="getInfo(ristorante)" >{{ristorante.name}}</button>
 </div>
 </div>
-</div>
 <div *ngIf="submitted" style="text-align: center;">  <!-- ...quando vengono inseriti dei criteri di ricervca ... --> 
   <div *ngIf="criteriRicerca.valid">
     <h2>Il risultato della tua ricerca:</h2>
-  <div *ngFor="let r of ricerca()">
-    <button (click)="getInfo(r)" >{{r.name}}</button></div>
-</div>
-<button class="btn btn-primary" style="color: blue;" (click)="submitted=false">Modifica</button>
+   <div *ngFor="let r of ricerca()">
+    <button (click)="getInfo(r)" >{{r.name}}</button>
+   </div>
+  </div>
 </div>

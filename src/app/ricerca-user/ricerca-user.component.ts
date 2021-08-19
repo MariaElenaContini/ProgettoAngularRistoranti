@@ -66,8 +66,8 @@ export class RicercaUserComponent implements OnInit {
 
   public ricerca():Ristorante[] {
     this.submitted = true;
-    //console.log('ricerca in corso...', this.criteriRicerca.controls.a.value, this.criteriRicerca.controls.t.value);
-    const ricercaUser = new CriteriRicerca(this.criteriRicerca.value, this.p,this.criteriRicerca.value.t);
+    //console.log('ricerca in corso...', this.criteriRicerca.value);
+    const ricercaUser = new CriteriRicerca(this.criteriRicerca.controls.a.value, this.p,this.criteriRicerca.controls.t.value);
     return this.searchService.search(ricercaUser);
    
     

@@ -39,11 +39,12 @@ export class SearchService {
 
     // aggiungi punteggio per cibo
     if (r.attributo === cr.preferenzaCibo) {
-      punteggio = punteggio + 500000;
+      punteggio = punteggio + 30;
     }
 
     // aggiungi punteggio per vicinanza
     if (r.coordinates.lat === cr.posizione.lat && r.coordinates.lon === cr.posizione.lon) {
+     console.log('esatta posizione');
       punteggio += 1;
     }
 
@@ -51,7 +52,7 @@ export class SearchService {
 
     // aggiungi punteggio per tempo
     if (r.tempo === cr.minutiDisponibili) {
-      punteggio = punteggio + 1;
+      punteggio = punteggio + 10;
     }
 
     punteggio = punteggio + this.punteggioTempo(r.tempo, cr.minutiDisponibili)*10;
