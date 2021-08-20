@@ -39,7 +39,7 @@ export class SearchService {
 
     // aggiungi punteggio per cibo
     if (r.attributo === cr.preferenzaCibo) {
-      punteggio = punteggio + 30;
+      punteggio = punteggio + 50;
     }
 
   // aggiungi punteggio per vicinanza --- NON succederà mai

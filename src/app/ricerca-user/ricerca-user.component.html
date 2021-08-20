@@ -1,11 +1,11 @@
 <form [formGroup]="criteriRicerca" (ngSubmit)="ricerca()">
   <div style="text-align: center;">
     <h1 style="text-align: center;">
-      <span style="color:navy">
+      <span style="color:red">
         <em>CIAO! Tu sei qui:</em>
       </span>
     </h1>
-   <img (click)="cambiaPosizione()" [src]="posizioni[currentPosition].img" height="300" width="450">
+   <img (click)="cambiaPosizione()" [src]="posizioni[currentPosition].img" height="250" width="390">
     
     <div style="text-align: center;">
       <label for="a">Che tipo di cibo desideri?</label>
@@ -25,7 +25,8 @@
     </div>
     <div *ngIf="criteriRicerca.invalid" class="alert" style="margin: 0.5 cm ; color: darkred;font-style:italic;">
       Per avviare la ricerca devi inserire i dati richiesti!</div>
-    <button class="btn btn-primary" type="submit" [disabled]="!criteriRicerca.valid" >CERCA</button>
+    <button class="btn btn-primary" type="submit" [disabled]="!criteriRicerca.valid"  >CERCA</button>
+  <button type="button" class="btn btn-success" (click)="cerca2()">CERCA2</button>
   </div>
 </form>
 <div *ngIf="!submitted" style="text-align: center;">  <!-- ...quando non vengono inseriti dei criteri di ricervca ... -->
@@ -33,7 +34,7 @@
  <div>
   <table width="100%" style="text-align:center ">
     <tr  *ngFor="let ristorante of ristorantiVicini()">
-      <td><b>{{ristorante.name | uppercase}} :</b></td>
+      <td style="color:blue"><b>{{ristorante.name | uppercase}} :</b></td>
       <td>{{ristorante.attributo}}</td>
       <td>tempo di permanenza medio: {{getTempo(ristorante.tempo)}}</td>
       <td>distante da te: {{getDistanza(ristorante.coordinates)}}</td>
@@ -41,13 +42,13 @@
   </table>
 </div>
 </div>
-<div *ngIf="submitted" style="text-align: center;">  <!-- ...quando vengono inseriti dei criteri di ricervca ... --> 
+<div *ngIf="submitted" style="text-align: center;;">  <!-- ...quando vengono inseriti dei criteri di ricervca ... --> 
   <div *ngIf="criteriRicerca.valid">
     <h2>Il risultato della tua ricerca:</h2>
    <div>
     <table width="100%" style="text-align:center ">
       <tr *ngFor="let r of ricerca()">
-        <td><b>{{r.name | uppercase}} :</b></td>
+        <td style="color:blue"><b>{{r.name | uppercase}} :</b></td>
         <td>{{r.attributo}}</td>
         <td>tempo di permanenza medio: {{getTempo(r.tempo)}}</td>
         <td>distante da te: {{getDistanza(r.coordinates)}}</td>
