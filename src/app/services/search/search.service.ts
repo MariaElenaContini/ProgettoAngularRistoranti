@@ -55,7 +55,7 @@ export class SearchService {
       punteggio = punteggio + 10;
     }
 
-    punteggio = punteggio + this.punteggioTempo(r.tempo, cr.minutiDisponibili)*10;
+    punteggio = punteggio + this.punteggioTempo(r.tempo, cr.minutiDisponibili)*5;
 
     return punteggio;
   }

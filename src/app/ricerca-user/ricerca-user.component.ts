@@ -7,7 +7,7 @@ import { CriteriRicerca } from '../classes/criteri-ricerca';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { Ristorante } from '../classes/ristorante';
-import { JsonPipe } from '@angular/common';
+import { timer } from 'rxjs';
 
 
 @Component({
@@ -109,21 +109,20 @@ export class RicercaUserComponent implements OnInit {
     const distanzaInKm= this.searchService.distanzaCoordinate(coordinate,this.posizioni[this.currentPosition].p)
     let valore = distanzaInKm.toPrecision(2) +"km" 
     if (distanzaInKm < 1){
-      valore = Math.round(distanzaInKm*1000)+ "m"
+      valore = Math.round(distanzaInKm*10)*100+ "m"
     }
     return valore
   }
-
+ 
+  
 public cerca2(){
   var i:number;
+  console.time('ricerca massiva');
   for (i=0;i<5000;i++){
     const ricercaUser = new CriteriRicerca(this.attributi[Math.random()*this.attributi.length], this.posizioni[Math.floor(Math.random()*this.posizioni.length)].p,this.tempi[Math.floor(Math.random()*this.tempi.length)].minuti);
     let ricerca=this.searchService.search(ricercaUser);
-    // if (i<10){
-    //   console.log(ricerca)
-    // }
   }
+  console.timeEnd('ricerca massiva');
 }
 
- 
 }
